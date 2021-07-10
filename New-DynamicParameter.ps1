@@ -1,4 +1,4 @@
-﻿Function New-DynamicParameter{
+Function New-DynamicParameter{
     [CmdletBinding()]
     [OutputType([System.Management.Automation.RuntimeDefinedParameterDictionary])]
     Param(
@@ -34,7 +34,8 @@
             $IgnoreCaseAttr.Mandatory=$false
             $AttrCol.Clear()
             $AttrCol.Add($IgnoreCaseAttr)
-            $IgnoreCaseParam=New-Object System.Management.Automation.RuntimeDefinedParameter('ValidateSetIgnoreCase',[switch],$AttrCol)
+            $IgnoreCaseParam=New-Object System.Management.Automation.RuntimeDefinedParameter('ValidateSetIgnoreCase',[bool],$AttrCol)
+            $IgnoreCaseParam.Value=$true
             $ParamDict=New-Object System.Management.Automation.RuntimeDefinedParameterDictionary
             $ParamDict.Clear()
             $ParamDict.Add('ValidateSetIgnoreCase',$IgnoreCaseParam)
@@ -82,7 +83,7 @@
                 IF($ValidateSet){
             $VSetAttr=New-Object System.Management.Automation.ValidateSetAttribute($ValidateSet)
                     IF($ValidateSetIgnoreCase){
-            $VSetAttr.IgnoreCase=$true}
+            $VSetAttr.IgnoreCase=$ValidateSetIgnoreCase}
             $AttrCol.Add($VSetAttr)}
 
                 IF($validateLength){
@@ -92,7 +93,7 @@
 
         IF($True){#Create Parameter, add it and the Attribute Collection to the Param Dict
             $ParamDict=New-Object System.Management.Automation.RuntimeDefinedParameterDictionary
-            $NewParam=New-Object System.Management.Automation.RuntimeDefinedParameter($Name,[system.type]$Type,$AttrCol)
+            $NewParam=New-Object System.Management.Automation.RuntimeDefinedParameter($Name,$Type,$AttrCol)
                 IF($DefaultValue){
             $NewParam.Value=$DefaultValue}
             $ParamDict.Add($Name,$NewParam)
